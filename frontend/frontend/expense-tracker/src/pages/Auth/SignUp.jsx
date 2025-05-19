@@ -17,23 +17,6 @@ const SignUp=()=>{
   const handleSignUp=async (e)=>{
     e.preventDefault();
 
-    let profileImageUrl="";
-
-    if(!fullName){
-      setError("Please enter your full name");
-      return;
-    }
-    if(!validateEmail(email)){
-      setError("Please provide a valid email address");
-      return;
-    }
-    if(!password){
-      setError("please enter the password");
-      return;
-    }
-    setError("");
-    //api call for signUp
-
   }
   return(
     <AuthLayout>

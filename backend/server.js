@@ -1,28 +1,22 @@
-const express=require("express");
-const {connectDB}=require("./config/db");
+const express = require("express");
 require("dotenv").config();
-const cors=require("cors");
-const path=require("path");
-const authRoutes=require("./routes/authRoutes");
+const cors = require("cors");
+const { connectDB } = require("./config/db");
 
-const app=express();
-//middlewares to handle cors
+const authRoutes = require("./routes/authRoutes");
+
+const app = express();
+
+// Middleware
 app.use(cors({
-    origin:process.env.CLIENT_URL||"*",
-    methods:["GET","POST","PUT","DELETE"],
-    allowedHeaders:["Content-type","Authorization"]
+  origin: process.env.CLIENT_URL,
+  credentials: true
 }));
-
-//middleware for data parsing
 app.use(express.json());
+
 connectDB();
 
-//definng all the routes
-app.use("/api/v1/auth",authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
-
-const PORT=process.env.PORT||5000;
-//server start kar denge
-app.listen(PORT,()=>{
-    console.log(`server started at PORT ${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

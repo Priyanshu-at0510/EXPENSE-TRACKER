@@ -1,58 +1,64 @@
-const User=require("../models/User")
-const jwt=require("jsonwebtoken");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
-//generate the jwt token
-const generateToken=(id)=>{
-    return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:"1h"});
-}
-//register the user || signup
-exports.registerUser=async(req,res)=>{
-  const {fullName,email,password,profileImageUrl}=req.body;
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
 
-  //validation:all field is present or not
-  if(!fullName || !email || !password ){
-    return res.status(400).json({
-        success:false,
-        message:"All field is required"
-    });
-    //check if user is already exists
-    try{
-        const existingUser=await User.findOne({email});
-        if(existingUser){
-            return res.status(400).json({
-                success:false,
-                message:"This email address is already registered"
-            })
-        }
-        //create the user
-        const user= await User.create({
-            fullName,
-            email,
-            password,
-            profileImageUrl
-        });
+exports.registerUser = async (req, res) => {
+  try {
+    const { fullName, email, password, profileImageUrl } = req.body;
 
-        res.status(200).json({
-            id:user._id,
-            user,
-            token:generateToken(user._id),
-        });
-
-    }catch(error){
-        return res.status(500).json({
-            success:false,
-            message:"Some internal server error occur during registering the User",
-            error:error.message
-        })
+    if (!fullName || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: "User already exists" });
+    }
+
+    const user = await User.create({ fullName, email, password, profileImageUrl });
+
+    res.status(201).json({
+      success: true,
+      user,
+      token: generateToken(user._id)
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Registration failed",
+      error: error.message
+    });
   }
 };
 
-//login the user
-exports.loginUser=async(req,res)=>{
-    
-}
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-exports.getUserInfo=async (req,res)=>{
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
 
-}
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+      token: generateToken(user._id)
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Login failed",
+      error: error.message
+    });
+  }
+};

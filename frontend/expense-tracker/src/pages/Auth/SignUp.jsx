@@ -51,7 +51,7 @@ const SignUp=()=>{
         fullName,
         email,
         password,
-        profileImageUrl
+        profileImageUrl,
       });
       const {token,user}=response.data;
       if(token){

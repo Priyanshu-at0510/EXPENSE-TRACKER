@@ -6,6 +6,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import { useEffect } from 'react';
 import InfoCard from '../../components/Cards/InfoCard';
+import RecentTransactions from '../../components/Dashboard/RecentTransactions';
 
 import {LuHandCoins,LuWalletMinimal} from "react-icons/lu";
 import {IoMdCard} from "react-icons/io";
@@ -25,6 +26,7 @@ const Home=()=>{
       const response=await axiosInstance.get(
         `${API_PATHS.DASHBOARD.GET_DATA}`
       );
+      console.log("Full dashboard response:", response);
       if(response.data){
         setDashboardData(response.data);
       }
@@ -39,8 +41,12 @@ const Home=()=>{
     fetchDashboardData();
     return ()=>{};
   },[]);
-
+  
+  console.log("going inside the Home");
+  console.log("DashboardData:", DashboardData);
+  console.log("RecentTransactions:", DashboardData?.RecentTransactions);
   return(
+    
     <DashboardLayout activeMenu="Dashboard">
 
       <div className='my-5 mx-auto'>
@@ -63,6 +69,12 @@ const Home=()=>{
             value={addThousandsSeparator(DashboardData?.totalExpenses || 0)}
             color="bg-red-500"
           />
+        </div>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+            <RecentTransactions
+             transactions={DashboardData?.recentTransactions}
+             onSeeMore={()=>navigate("/expense")}
+            />
         </div>
       </div>
     </DashboardLayout>

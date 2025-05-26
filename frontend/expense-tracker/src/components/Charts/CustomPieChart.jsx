@@ -1,5 +1,6 @@
 import React from "react";
 import CustomTooltip from "./CustomTooltip";
+import CustomLegend from "./CustomLegend";
 import {
     PieChart,
     Pie,
@@ -19,7 +20,6 @@ const CustomPieChart=({
     console.log("CustomPieChart props:", { data, colors, label, totalAmount, showTextAnchor });
     console.log("entering into the Custom Pie chart file File")
     return(
-    <div>
         <ResponsiveContainer width="100%" height={380} >
         <PieChart>
             <Pie
@@ -37,10 +37,10 @@ const CustomPieChart=({
             ))}
             </Pie>
             <Tooltip content={CustomTooltip} />
-            <Legend/>
+            <Legend content={CustomLegend}/>
 
             {showTextAnchor && (
-                <>
+                <g>
                 <text
                   x="50%"
                   y="50%"
@@ -62,14 +62,11 @@ const CustomPieChart=({
                     >
                       {totalAmount}
                       </text>
-                </>
+                </g>
             )}
         </PieChart>
     </ResponsiveContainer>
-    </div>
     );
-    
-    
 };
 
 export default CustomPieChart;

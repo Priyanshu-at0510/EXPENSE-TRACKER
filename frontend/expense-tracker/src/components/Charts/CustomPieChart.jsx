@@ -1,4 +1,5 @@
 import React from "react";
+import CustomTooltip from "./CustomTooltip";
 import {
     PieChart,
     Pie,
@@ -35,7 +36,7 @@ const CustomPieChart=({
                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]}/>
             ))}
             </Pie>
-            <Tooltip/>
+            <Tooltip content={CustomTooltip} />
             <Legend/>
 
             {showTextAnchor && (

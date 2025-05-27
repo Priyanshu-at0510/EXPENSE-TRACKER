@@ -13,7 +13,9 @@ import {IoMdCard} from "react-icons/io";
 import {addThousandsSeparator} from "../../utils/helper";
 import FinanceOverview from '../../components/Dashboard/FinanceOverview';
 import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions';
-
+import Last30DaysExpenses from '../../components/Dashboard/Last30DaysExpenses';
+import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart';
+import RecentIncome from '../../components/Dashboard/RecentIncome';
 const Home=()=>{
   useUserAuth();
 
@@ -48,6 +50,8 @@ const Home=()=>{
   console.log("going inside the Home");
   console.log("DashboardData:", DashboardData);
   console.log("RecentTransactions:", DashboardData?.RecentTransactions);
+  console.log("Bar chart transactions:", DashboardData?.last30DaysExpenseTransaction?.transactions);
+
   return(
     
     <DashboardLayout activeMenu="Dashboard">
@@ -84,17 +88,24 @@ const Home=()=>{
              totalExpenses={DashboardData?.totalExpense || 0}
             />
             <ExpenseTransactions
-             transactions={DashboardData?.last300DaysExpenses?.transactions || 0}
+             transactions={DashboardData?.last30DaysExpenseTransaction?.transactions || []}
              onSeeMore={()=>navigate("/expense")}
             />
-            <last30DaysExpenses
-             transactions={DashboardData?.last300DaysExpenses?.transactions || 0}
-             />
-             
 
-             
+            <Last30DaysExpenses
+             data={DashboardData?.last30DaysExpenseTransaction?.transactions || 0}
+            />
 
+            <RecentIncomeWithChart
+             data={DashboardData?.last60DaysIncomeTransaction?.transactions?.slice(0,4) || []}
+             totalIncome={DashboardData?.totalIncome || 0}
+            />
             
+            <RecentIncome
+             transactions={DashboardData?.last60DaysIncome?.transactions || []}
+             onSeeMore={()=>navigate("/income")}
+            />
+        
         </div>
       </div>
     </DashboardLayout>

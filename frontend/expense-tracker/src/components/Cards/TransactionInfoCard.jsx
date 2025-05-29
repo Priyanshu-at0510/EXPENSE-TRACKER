@@ -13,6 +13,7 @@ const TransactionInfoCard=({
     amount,
     type,
     hideDeleteBtn,
+    onDelete
 })=>{
     console.log("going inside the TransactionInfo Card");
     

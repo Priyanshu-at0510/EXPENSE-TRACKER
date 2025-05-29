@@ -5,6 +5,9 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import Modal from '../../components/Modal';
 import AddIncomeForm from '../../components/Income/AddIncomeForm';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import IncomeList from '../../components/Income/IncomeList';
 
 const Income=()=>{
   const [incomeData,setIncomeData]=useState([]);
@@ -87,6 +90,13 @@ const Income=()=>{
              <IncomeOverview
                transactions={incomeData}
                onAddIncome={()=>setOpenAddIncomeModal(true)}
+              />
+              <IncomeList
+                transactions={incomeData}
+                onDelete={(id)=>{
+                  setOpenDeleteAlert({show:true,data:id});
+                }}
+                onDownload={handleDownloadIncomeDetails}
               />
           </div>
         </div>

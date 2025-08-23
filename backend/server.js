@@ -14,12 +14,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Ensure uploads folder exists at runtime
-const uploadPath = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath);
-}
-
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 connectDB();
